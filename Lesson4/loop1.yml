@@ -1,0 +1,55 @@
+---
+- name: LOOP
+  hosts: all
+  become: yes  # Run tasks with sudo privileges
+
+  vars:
+    my_list_1: [first , second , third]
+    my_list_2:
+      - A-A-A-A-A
+      - B-B-B-B-B
+      - C-C-C-C-C
+    my_list_3:
+      - "1-1-1-1"
+      - "2-2-2-2"
+      - "3-3-3-3"
+
+  tasks:
+    - name: Debug  -- LOOP --
+      debug:
+        msg : "Hello {{ item }}"
+      loop:
+        - "LOOP--1"
+        - "LOOP--2"
+        - "LOOP--3"
+
+    - name: Debug  -- my_list_1 --
+      debug:
+        msg : "Hello {{ item }}"
+      loop: "{{ my_list_1 }}"
+
+    - name: Debug  -- my_list_2 --
+      debug:
+        msg : "Hello {{ item }}"
+      loop: "{{ my_list_2 }}"
+
+    - name: Debug -- my_list_3 --
+      debug:
+        msg : "Hello {{ item }}"
+      loop: "{{ my_list_3 }}"
+
+    - name: Install  Packages using -- With_items --
+      apt: name={{ item }}  state=present
+      with_items:
+        - tree
+        - htop
+
+    - name: LOOP using  -- UNTIL --
+      shell: echo -n X >> my_file && cat my_file
+      register: output
+#      retries: 10
+      until: output.stdout == "XXXX"
+      
+    - name: Print Results of loop until
+      debug:
+        var: output

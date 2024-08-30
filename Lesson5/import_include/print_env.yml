@@ -1,0 +1,7 @@
+- name: PRINT ENV
+  debug:
+    var: env.stdout
+
+- name: print HOSTNAME
+  debug:
+    msg: "Inventory name is: {{ inventory_hostname }}"

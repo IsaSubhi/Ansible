@@ -1,0 +1,31 @@
+---
+- name: Messages
+  hosts: all
+  become: yes
+
+  vars:
+    msg_1: Hello
+    msg_2: World
+
+  tasks:
+    - name: Print Secret
+      debug: 
+        var: secret
+
+    - name: Print Message
+      debug: 
+        msg: "This is a message from {{ owner }}: {{msg_1}} {{msg_2}}"
+
+    - set_fact: full_msg="{{msg_1}} {{msg_2}}"
+    - debug:
+        var: full_msg
+    
+    - name: Save Task Result
+      shell: uptime
+      register: custom_time 
+    - debug:
+        var: custom_time.end
+    
+    - debug:
+        var: ansible_os_family
+...

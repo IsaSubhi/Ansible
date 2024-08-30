@@ -1,0 +1,38 @@
+---
+- name: LOOPS
+  hosts: all
+  become: yes  # Run tasks with sudo privileges
+
+  vars:
+     my_list_1: [first , second , third]
+     src_folder: ./App
+     dest_folder: ~/folder
+
+  tasks:
+    - name: UPDATE
+      shell: apt update
+
+    - name: LOOP using  -- UNTIL --
+      shell: echo -n X >> my_file && cat my_file
+      register: output
+#      retries: 10
+      until: output.stdout == "X"
+
+    - name: Print Results of loop until
+      debug:
+        var: output
+
+    - name: Create directory
+      shell: mkdir {{ dest_folder }}
+
+    - name: Copy all files from folder
+      copy: src={{ item }}  dest={{ dest_folder }} mode=0555
+      with_fileglob: "{{ src_folder }}/*.*"
+
+    - name: LS dest folder
+      shell: ls {{ dest_folder }}
+      register: ls_output
+
+    - name: Print result of ls
+      debug:
+        var: ls_output.stdout

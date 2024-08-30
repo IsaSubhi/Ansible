@@ -1,0 +1,31 @@
+---
+- name: Play with delegate_to
+  hosts: all
+  become: yes  # Run tasks with sudo privileges
+
+
+  tasks:
+    - name: Print hello msg once
+      debug: 
+        msg: "hello from {{ inventory_hostname }}"
+      run_once: true
+
+    - name: Reboot task
+      shell: sleep 2  && reboot now 
+      async: 1          # then start 1=start after 1sec
+      poll: 0           # then check result  0=not check
+      ignore_errors: yes  # Ignore errors since the connection may be lost after the reboot#
+
+    - name: Wating for reboot host
+      wait_for:
+        host: "{{ inventory_hostname }}"
+        port: 22
+        state: started
+        delay: 10     # Delay before starting to poll (in seconds)
+        timeout: 120   # Total time to wait for the condition to be met (in seconds)
+      delegate_to: 127.0.0.1
+      ignore_errors: yes  # Ignore errors since the connection may be lost after the reboot#
+
+    - name: Print to log
+      shell: echo Start {{ inventory_hostname }} >> log.txt
+      delegate_to: 127.0.0.1

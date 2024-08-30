@@ -1,0 +1,7 @@
+- name: IMPORT PRINT VAR-ENV
+  debug:
+    var: env.stdout
+
+- name: print HOSTNAME
+  debug:
+    msg: "IMPOST task on : {{ inventory_hostname }}"

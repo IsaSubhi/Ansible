@@ -1,0 +1,25 @@
+---
+- name: Include-Import tasks
+  hosts: all
+  become: yes  # Run tasks with sudo privileges
+
+  vars:
+    my_text: "this is hardCoded text"
+    dest_folder: /var/www/html
+    src_folder: ./App
+    env: "Test_Text"
+
+  tasks:
+    - ping:
+    - include_tasks: include_task.yml
+    - import_tasks: import_task.yml
+#    - include_tasks: include_task.yml  env="NEW_VALUE for MY_TEXT"
+    - name: SET_FACT
+      shell: echo EchoTest > my_file.txt  && cat my_file.txt
+      register: env
+
+    - include_tasks: include_task.yml
+    - import_tasks: import_task.yml
+
+    - include_tasks: print_env.yml
+    - import_tasks: print_env.yml

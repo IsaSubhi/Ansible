@@ -1,0 +1,22 @@
+---
+# tasks file for role1
+- name: Install Apache
+  apt:  name=apache2  state=present
+
+- name: Copy Web Files
+  copy: src={{  item  }} dest={{  dest_folder  }}  mode=0555
+  with_fileglob: "*.*"
+
+- name: Copy Template
+  template: src="index.j2" dest={{  dest_folder  }}/index.html  mode=0555
+
+- name: Start Apache service
+  service:  name=apache2  state=started  enabled=yes
+      
+- name: LS folder HTML
+  shell: ls /var/www/html
+  register: ls_output
+
+- name: Print Result of LS HTML
+  debug:
+    var: ls_output.stdout

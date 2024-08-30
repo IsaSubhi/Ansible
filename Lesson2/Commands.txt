@@ -1,0 +1,12 @@
+ansible -i ./hosts all -m ping
+ansible all -m ping
+
+ansible all -m setup                           # info from server
+ansible all -m shell -a "uptime"               # time from server
+
+ansible all -m shell -a "ls /etc | grep group"
+ansible all -m command -a "ls /etc | grep group"
+ansible all -m command -a "pwd"
+
+ansible all -m copy -a "src=pathToFile dest=/home  mode=777"  -b
+ansible all -m file -a "path=pathToFile  state=absent"  -b

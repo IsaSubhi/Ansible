@@ -1,0 +1,30 @@
+---
+- name: Install Apache Web Server
+  hosts: all
+  become: yes
+
+  vars:
+    src_file: ./app/index.html
+    dest_file: /var/www/html/
+  
+  tasks:
+    - name: Update apt package
+      apt:
+       update_cache: yes
+
+    - ping:
+
+    - name: Install Apache
+      apt: name=apache2 state=latest
+
+    - name: Copy file
+      copy: src={{ src_file }} dest={{ dest_file }} mode=0555
+      notify: Restart Apache Service
+    
+    - name: Start Apache Service
+      service: name=apache2 state=started enabled=yes
+
+  handlers:
+    - name: Restart Apache Service
+      service: name=apache2 state=restarted
+...

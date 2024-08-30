@@ -1,0 +1,20 @@
+---
+- name: Error book
+  hosts: all
+  become: yes
+#  any_errors_fatal: true
+
+  tasks:
+  - name: Task-1
+    shell: ls ~/folder
+#    ignore_errors: yes
+
+  - name: Task-2
+    shell: echo xyz > ~/file.txt  && cat ~/file.txt
+    register: result
+#    failed_when: "'xyz' in result.stdout"
+#    failed_when: result.rc != 0
+
+  - name: Task-3
+    debug:
+      var: result.stdout

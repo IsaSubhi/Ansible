@@ -1,0 +1,3 @@
+---
+# vars file for install_web
+dest_file: /var/www/html

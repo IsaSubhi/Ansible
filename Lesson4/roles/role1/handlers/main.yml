@@ -1,0 +1,7 @@
+---
+# handlers file for role1
+- name: Restart Apache Service
+  service: name=apache2 state=restarted
+
+- name: Restart httpd Service
+  service: name=httpd state=restarted

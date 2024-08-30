@@ -1,0 +1,38 @@
+---
+- name: Install Custom Apache Web Server with J2
+  hosts: all
+  become: yes  # Run tasks with sudo privileges
+
+  vars:
+    src_folder: ./App
+    dest_folder: /var/www/html
+    my_files:
+      - page.html
+      - logo.png
+
+  tasks:
+    - name: Install Apache on Ubuntu
+      apt:  name=apache2  state=present
+      when: ansible_os_family == "Debian"
+
+    - name: Copy Web File
+      copy: src={{  src_folder  }}/{{  item  }} dest={{  dest_folder  }}  mode=0555
+      loop:
+        - "logo.png"
+        - "page.html"
+
+    - name: Copy TMPL
+      template: src={{  src_folder  }}/index.j2 dest={{  dest_folder  }}/index.html  mode=0555
+
+    - name: LS folder  HTML
+      shell: ls /var/www/html
+      register: ls_output
+
+    - name: Print Result of LS HTML
+      debug:
+        var: ls_output.stdout
+
+    - name: Start Apache service
+      service:  name=apache2  state=started  enabled=yes
+      when: ansible_os_family == "Debian"
+      

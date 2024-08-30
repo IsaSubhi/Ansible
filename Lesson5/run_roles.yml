@@ -1,0 +1,10 @@
+---
+- name: Test Roles
+#  hosts: all
+  hosts: "{{ MY_HOSTS }}"
+  become: yes  # Run tasks with sudo privileges
+
+  roles:
+#    - { role: install_web }
+    - { role: debug  }
+#    - { role: install_apache }

@@ -1,0 +1,42 @@
+---
+- name: Install Apache Web Server
+  hosts: all
+  become: yes
+
+  vars:
+    src_file: ./app/index.html
+    dest_file: /var/www/html/
+  
+  tasks:
+    - name: Update apt package
+      apt: update_cache=yes
+      when: ansible_os_family == "Debian"
+      
+    - name: Update yum package
+      yum: update_cache=yes
+      when: ansible_os_family == "RedHat"
+
+    - name: Install Apache
+      apt: name=apache2 state=latest
+      when: ansible_os_family == "Debian"
+    
+    - name: Install httpd
+      yum: name=httpd state=latest
+      when: ansible_os_family == "RedHat"
+
+    - name: Copy file
+      copy: src={{ src_file }} dest={{ dest_file }} mode=0555
+      #notify: Restart Apache Service
+    
+    - name: Start Apache Service
+      service: name=apache2 state=started enabled=yes
+      when: ansible_os_family == "Debian"
+
+    - name: Start httpd Service
+      service: name=httpd state=started enabled=yes
+      when: ansible_os_family == "RedHat"
+
+  handlers:
+    - name: Restart Apache Service
+      service: name=apache2 state=restarted
+...

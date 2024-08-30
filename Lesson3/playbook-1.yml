@@ -1,0 +1,14 @@
+---
+
+- name: Ping all hosts
+  hosts: all
+  become: yes
+  
+  tasks:
+  - name: send ping
+    ping:
+  
+  - name: print setup
+    setup:
+
+...

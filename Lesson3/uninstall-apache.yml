@@ -1,0 +1,34 @@
+---
+- name: Uninstall Web Server
+  hosts: all
+  become: yes
+
+  vars:
+    src_file: ./app/index.html
+    dest_file: /var/www/html/
+  
+  tasks:
+    - block:
+      - name: Update apt package
+        apt: update_cache=yes
+    
+      - name: Delete Apache
+        apt: name=apache2 state=absent
+
+      - name: Delete Web File
+        file: path={{ dest_file }} state=absent
+
+      when: ansible_os_family == "Debian"
+
+    - block:
+      - name: Update yum package
+        yum: update_cache=yes
+    
+      - name: Delete httpd
+        yum: name=httpd state=absent
+      
+      - name: Delete Web File
+        file: path={{ dest_file }} state=absent
+      
+      when: ansible_os_family == "RedHat"
+...

@@ -1,0 +1,29 @@
+---
+- name: Install Custom Apache Web Server
+  hosts: all
+  become: yes  # Run tasks with sudo privileges
+
+  vars:
+    src_folder: ./App
+    dest_folder: /var/www/html
+
+  tasks:
+    - name: Install Apache
+      apt:  name=apache2  state=present
+
+    - name: Copy Web Files
+      copy: src={{  item  }} dest={{  dest_folder  }}  mode=0555
+      with_fileglob: "{{ src_folder }}/*.*"
+
+    - name: Start Apache service
+      service:  name=apache2  state=started  enabled=yes
+
+    - name: LS folder HTML
+      shell: ls /var/www/html
+      register: ls_output
+
+    - name: Print Result of ls
+      debug:
+        var: ls_output.stdout
+
+    

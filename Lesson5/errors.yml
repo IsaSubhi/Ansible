@@ -1,0 +1,31 @@
+---
+- name: Error book
+  hosts: all
+  become: yes
+  any_errors_fatal: true
+
+  vars:
+    result: "HELLO"
+
+  tasks:
+  - name: Task-1
+    shell: ls /home/ubuntu/folder
+    register: result
+#    ignore_errors: yes
+
+  - name: Task-2
+    debug:
+      var:  result 
+ #   failed_when: result.rc == 2
+
+
+  - name: Task-3
+    shell: echo TextEcho >> ~/file.txt  && cat ~/file.txt
+    register: result
+    failed_when: "'xyz' in result.stdout"
+#    failed_when: "'TextEcho' in result.stdout"
+#    failed_when: result.rc != 0
+
+  - name: Task-4
+    debug:
+      var:  result 

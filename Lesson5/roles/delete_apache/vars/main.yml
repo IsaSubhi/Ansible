@@ -1,0 +1,4 @@
+---
+# vars file for del_apache
+
+dest_file: /var/www/html/

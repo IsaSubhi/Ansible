@@ -1,0 +1,7 @@
+- name: INCLUDE PRINT VAR-ENV
+  debug:
+    var: env.stdout
+
+- name: print HOSTNAME
+  debug:
+    msg: "INCLUDE task on : {{ inventory_hostname }}"
