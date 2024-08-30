@@ -1,0 +1,8 @@
+---
+# vars file for project
+
+apps_list: [python3, net-tools, tree, htop]
+
+src_file: ./app/index.html
+
+dest_file: /var/www/html/

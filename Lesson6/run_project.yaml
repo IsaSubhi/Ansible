@@ -1,0 +1,8 @@
+---
+- name: Install Custom Apache Web Server with roles
+  hosts: all
+  become: yes  # Run tasks with sudo privileges
+  
+  roles:
+    - { role: project }
+  

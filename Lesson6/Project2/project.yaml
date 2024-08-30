@@ -1,0 +1,99 @@
+- name: Project
+  hosts: all
+  become: yes
+
+  vars:
+    apps_list: [python3, net-tools, tree, htop]
+    src_file: ./app/index.html
+    dest_file: /var/www/html/
+
+  tasks: 
+    - block:
+      - name: Install Configurtion Apps
+        apt: name={{ item }} state=latest 
+        loop: "{{ apps_list }}"
+    
+      - name: Update the System
+        apt: update_cache=yes
+
+      - name: Install Apache
+        apt: name=apache2 state=latest
+    
+      - name: Copy Files to Hosts
+        copy: src={{ src_file }} dest={{ dest_file }} mode=0555
+        #notify: Restart Apache Service
+
+      - name: Start Apache Service
+        service: name=apache2 state=started enabled=yes
+
+      when: ansible_os_family == "Debian"
+
+    - block:
+      - name: Install Configurtion Apps
+        yum: name={{ item }} state=latest 
+        loop: "{{ apps_list }}"
+      
+      - name: Update the System
+        yum: update_cache=yes
+    
+      - name: Install httpd
+        yum: name=httpd state=latest
+
+      - name: Copy Files to Hosts
+        copy: src={{ src_file }} dest={{ dest_file }} mode=0555
+        #notify: Restart Apache Service
+    
+      - name: Start httpd Service
+        service: name=httpd state=started enabled=yes
+      
+      when: ansible_os_family == "RedHat"
+       
+    - name: Check Open Port
+      wait_for:
+        state: started
+        port: "80"
+        delay: 0
+        timeout: 3
+      register: result
+      failed_when: result.elapsed != 0
+
+    - name: Clear os_family File if Exist
+      file:
+        path: ~/os_list.txt
+        state: absent
+      delegate_to: localhost
+      run_once: True
+      #become: no
+
+    - name: Add os_family to File
+      shell: echo {{ ansible_facts.os_family }} >> ~/os_list.txt && cat ~/os_list.txt
+      delegate_to: localhost
+      #become: no
+
+    - block:
+      - name: Count Debian Hosts
+        shell: cat ~/os_list.txt | grep -c "Debian"
+        register: debian_count
+      
+      - name: Count RedHat Hosts
+        shell: cat ~/os_list.txt | grep -c "RedHat"
+        register: redhat_count
+
+      - name: Print Debian Hosts Count 
+        debug:
+          var: debian_count.stdout
+
+      - name: Print RedHat Hosts Count 
+        debug:
+          var: redhat_count.stdout
+      
+      delegate_to: localhost
+      run_once: True
+      #become: no
+
+  handlers:
+    - name: Restart Apache Service
+      service: name=apache2 state=restarted
+
+    - name: Restart httpd Service
+      service: name=httpd state=restarted
