@@ -19,7 +19,8 @@ All Variables can be found in the [VARS](../project/vars/main.yml) file
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+How to use the role:<br>
+By running [Project Run](../run_project.yaml) file 
 
     - name: Install Custom Apache Web Server with roles
       hosts: all
