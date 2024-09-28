@@ -1,0 +1,27 @@
+[PROD_APP]
+ubuntu-1 ansible_host="IP_address" ansible_user="username" ansible_ssh_private_key_file="ssh_key"
+
+[PROD_DB]
+ubuntu-2 ansible_host="IP_address" ansible_user="username" ansible_ssh_private_key_file="ssh_key"
+
+[DEV_APP]
+ubuntu-3 ansible_host="IP_address" ansible_user="username" ansible_ssh_private_key_file="ssh_key"
+
+[DEV_DB]
+ubuntu-4 ansible_host="IP_address" ansible_user="username" ansible_ssh_private_key_file="ssh_key"
+
+[PROD_ALL:children]
+PROD_APP
+PROD_DB
+
+[DEV_ALL:children]
+DEV_APP
+DEV_DB
+
+[APP_ALL:children]
+PROD_APP
+DEV_APP
+
+[DB_ALL:children]
+PROD_DB
+DEV_DB
