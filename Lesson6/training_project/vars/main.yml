@@ -1,5 +1,0 @@
----
-src_file: ./files/1.txt
-dest_folder: /home/
-
-message_loop: [message_1 , message_2 , message_3]

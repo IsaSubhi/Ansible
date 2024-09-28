@@ -1,8 +1,0 @@
----
-- name: Run training_project
-  hosts: all
-  become: yes
-    
-  roles:
-    - { role: training_project }
-  

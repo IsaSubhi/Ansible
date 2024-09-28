@@ -1,2 +1,0 @@
-This is 1.txt file.
-Needs to be copied to all hosts.
