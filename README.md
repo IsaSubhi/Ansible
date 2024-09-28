@@ -10,7 +10,7 @@
 ## [Ansible Project](./Ansible_Project):
 ### Overview:
 [Main Project](./Ansible_Project/project):
-- This Project install the nessasiry packages
+- This Project install the necessary packages
 - Update the system
 - Install webserver Apache/HTTPD
 - Copies the project files (HTML) to the hosts
