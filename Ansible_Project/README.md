@@ -1,6 +1,6 @@
-# [Ansible Project](./Ansible_Project):
+# Ansible Project:
 ## Overview:
-[Main Project](./Ansible_Project/project):
+[Main Project](./project):
 - This Project install the necessary packages
 - Update the system
 - Install webserver Apache/HTTPD
@@ -8,7 +8,7 @@
 - Prints how many RedHat Debian hosts there are
 <br>
 
-[Training Project](./Ansible_Project/training_project):
+[Training Project](./training_project):
 - Copies 1.txt file to the host
 - Prints a message
 - Prints OS_FAMILY of host
@@ -18,10 +18,10 @@
 
 ## Usage:
 
-To run the Projects it is necessary to configure the [Ansible Configuration](../ansible.cfg) file AND [Hosts](..//hosts) / [Hosts-AWS](../hosts-AWS) file.<br>
+To run the Projects it is necessary to configure the [Ansible Configuration](./ansible.cfg) file AND [Hosts](./hosts) / [Hosts-AWS](./hosts-AWS) file.<br>
 <br>
 The projects can be executed by running:<br> 
-[Project](../run_project.yaml) run file: <br> 
+[Project](./run_project.yaml) run file: <br> 
 
     - name: Install Custom Apache Web Server with roles
       hosts: all
@@ -29,7 +29,7 @@ The projects can be executed by running:<br>
       roles:
         - { role: project }
   
-[Training Project](../run_training_project.yaml) run file:
+[Training Project](./run_training_project.yaml) run file:
 
     - name: Run training_project
       hosts: all
